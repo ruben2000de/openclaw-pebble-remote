@@ -1,0 +1,40 @@
+{
+  "hooks": {
+    "enabled": true,
+    "path": "/hooks-openclaw-pebble-REPLACE_WITH_RANDOM_SUFFIX",
+    "token": "${OPENCLAW_PEBBLE_HOOK_TOKEN}",
+    "defaultSessionKey": "hook:pebble",
+    "allowRequestSessionKey": false,
+    "allowedSessionKeyPrefixes": [
+      "hook:pebble"
+    ],
+    "allowedAgentIds": [
+      "main"
+    ],
+    "maxBodyBytes": 4096,
+    "transformsDir": "/home/node/.openclaw/hooks/transforms",
+    "mappings": [
+      {
+        "id": "pebble-intent",
+        "name": "OpenClaw Pebble Remote",
+        "match": {
+          "path": "pebble-intent"
+        },
+        "action": "agent",
+        "wakeMode": "now",
+        "sessionKey": "hook:pebble",
+        "messageTemplate": "Pebble fallback intent={{payload.intent}} text={{payload.text}} request={{payload.requestId}}",
+        "deliver": true,
+        "channel": "discord",
+        "to": "channel:REPLACE_WITH_DELIVERY_TARGET",
+        "model": "openai/gpt-5.4",
+        "thinking": "low",
+        "timeoutSeconds": 90,
+        "allowUnsafeExternalContent": false,
+        "transform": {
+          "module": "pebble-intent.mjs"
+        }
+      }
+    ]
+  }
+}

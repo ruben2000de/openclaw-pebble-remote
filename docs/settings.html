@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>OpenClaw Pebble Remote Settings</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 18px;
+      font: 16px/1.35 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f6f8f8;
+      color: #152024;
+    }
+    main {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 22px;
+      margin: 0 0 14px;
+    }
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      font-weight: 650;
+    }
+    input, select, button {
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid #cbd5d8;
+      border-radius: 6px;
+      padding: 9px 11px;
+      font: inherit;
+      background: #fff;
+    }
+    button {
+      margin-top: 18px;
+      border-color: #173f46;
+      background: #173f46;
+      color: #fff;
+      font-weight: 700;
+    }
+    p {
+      margin: 8px 0;
+      color: #526064;
+    }
+    .error {
+      color: #8a1f11;
+      font-weight: 650;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>OpenClaw Pebble Remote</h1>
+    <p>Speichert Endpoint und Hook-Token lokal in PebbleKit JS auf dem Telefon. Kein Token gehoert ins Git-Repo.</p>
+
+    <label for="endpoint">Hook URL</label>
+    <input id="endpoint" name="endpoint" autocomplete="off" placeholder="https://example/hooks-openclaw-pebble/pebble-intent">
+
+    <label for="token">Bearer Token</label>
+    <input id="token" name="token" autocomplete="off" type="password" placeholder="OPENCLAW_PEBBLE_HOOK_TOKEN">
+
+    <label for="route">Route</label>
+    <select id="route" name="route">
+      <option value="hook">OpenClaw Hook</option>
+    </select>
+
+    <label for="profile">Profil</label>
+    <input id="profile" name="profile" autocomplete="off" placeholder="otti" value="otti">
+
+    <label for="agentLabel">Agent-Anzeige</label>
+    <input id="agentLabel" name="agentLabel" autocomplete="off" placeholder="Otti" value="Otti">
+
+    <label for="replyMode">Rueckkanal</label>
+    <select id="replyMode" name="replyMode">
+      <option value="notification">Notification/Card</option>
+      <option value="watchapp">Watchapp direkt spaeter</option>
+    </select>
+
+    <p id="error" class="error" hidden></p>
+    <button type="button" id="save">Speichern</button>
+  </main>
+
+  <script>
+    function params() {
+      var out = {};
+      var query = window.location.search.replace(/^\?/, '');
+      query.split('&').forEach(function(part) {
+        if (!part) return;
+        var bits = part.split('=');
+        out[decodeURIComponent(bits[0])] = decodeURIComponent(bits.slice(1).join('=') || '');
+      });
+      return out;
+    }
+
+    function showError(message) {
+      var error = document.getElementById('error');
+      error.textContent = message;
+      error.hidden = false;
+    }
+
+    function closeWithConfig() {
+      var endpoint = document.getElementById('endpoint').value.trim();
+      var token = document.getElementById('token').value.trim();
+      if (!/^https?:\/\//.test(endpoint)) {
+        showError('Hook URL muss mit http:// oder https:// beginnen.');
+        return;
+      }
+      if (!token) {
+        showError('Bearer Token fehlt.');
+        return;
+      }
+
+      var config = {
+        endpoint: endpoint,
+        token: token,
+        route: document.getElementById('route').value,
+        profile: document.getElementById('profile').value.trim() || 'otti',
+        agentLabel: document.getElementById('agentLabel').value.trim() || 'Otti',
+        replyMode: document.getElementById('replyMode').value
+      };
+      document.location = 'pebblejs://close#' + encodeURIComponent(JSON.stringify(config));
+    }
+    var initial = params();
+    if (initial.endpoint) {
+      document.getElementById('endpoint').value = initial.endpoint;
+    }
+    if (initial.route) {
+      document.getElementById('route').value = initial.route;
+    }
+    if (initial.profile) {
+      document.getElementById('profile').value = initial.profile;
+    }
+    if (initial.agentLabel) {
+      document.getElementById('agentLabel').value = initial.agentLabel;
+    }
+    if (initial.replyMode) {
+      document.getElementById('replyMode').value = initial.replyMode;
+    }
+    document.getElementById('save').addEventListener('click', closeWithConfig);
+  </script>
+</body>
+</html>

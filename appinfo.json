@@ -1,0 +1,32 @@
+{
+  "uuid": "7d9cf916-0ef3-47b4-9d08-0d4a8fb9630b",
+  "shortName": "Otti",
+  "longName": "Otti Remote",
+  "companyName": "OpenClaw Pebble Remote contributors",
+  "versionLabel": "0.5.2",
+  "sdkVersion": "3",
+  "targetPlatforms": [
+    "basalt",
+    "chalk",
+    "diorite",
+    "flint",
+    "emery",
+    "gabbro"
+  ],
+  "watchapp": {
+    "watchface": false
+  },
+  "capabilities": [
+    "configurable"
+  ],
+  "appKeys": {
+    "action": 0,
+    "text": 1,
+    "request_id": 2,
+    "response": 3,
+    "status": 4
+  },
+  "resources": {
+    "media": []
+  }
+}

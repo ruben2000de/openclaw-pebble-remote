@@ -1,0 +1,43 @@
+{
+  "name": "openclaw-pebble-remote",
+  "author": "OpenClaw Pebble Remote contributors",
+  "license": "MIT",
+  "version": "0.5.2",
+  "keywords": [
+    "pebble-app"
+  ],
+  "private": true,
+  "dependencies": {
+    "@rebble/clay": "^1.0.10"
+  },
+  "pebble": {
+    "displayName": "Otti Remote",
+    "uuid": "7d9cf916-0ef3-47b4-9d08-0d4a8fb9630b",
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": [
+      "basalt",
+      "chalk",
+      "diorite",
+      "flint",
+      "emery",
+      "gabbro"
+    ],
+    "watchapp": {
+      "watchface": false
+    },
+    "capabilities": [
+      "configurable"
+    ],
+    "messageKeys": [
+      "action",
+      "text",
+      "request_id",
+      "response",
+      "status"
+    ],
+    "resources": {
+      "media": []
+    }
+  }
+}

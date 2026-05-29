@@ -1,0 +1,78 @@
+[
+  {
+    "type": "heading",
+    "defaultValue": "Otti Remote Setup"
+  },
+  {
+    "type": "text",
+    "defaultValue": "Configure the OpenClaw hook used by the watch remote. Keep real tokens out of GitHub/CloudPebble source files."
+  },
+  {
+    "type": "section",
+    "items": [
+      {
+        "type": "heading",
+        "defaultValue": "OpenClaw Hook"
+      },
+      {
+        "type": "input",
+        "messageKey": "endpoint",
+        "label": "Hook endpoint URL",
+        "description": "HTTP(S) endpoint reachable from your phone, e.g. https://host/hooks-openclaw-pebble/pebble-intent",
+        "defaultValue": ""
+      },
+      {
+        "type": "input",
+        "messageKey": "token",
+        "label": "Bearer token",
+        "description": "Dedicated token for this hook. It is stored by PebbleKit JS localStorage on the phone.",
+        "defaultValue": ""
+      },
+      {
+        "type": "select",
+        "messageKey": "route",
+        "label": "Route",
+        "defaultValue": "hook",
+        "options": [
+          {"label": "OpenClaw Hook", "value": "hook"}
+        ]
+      }
+    ]
+  },
+  {
+    "type": "section",
+    "items": [
+      {
+        "type": "heading",
+        "defaultValue": "Profile"
+      },
+      {
+        "type": "input",
+        "messageKey": "profile",
+        "label": "Profile",
+        "description": "Display/profile hint only; routing remains server-side.",
+        "defaultValue": "otti"
+      },
+      {
+        "type": "input",
+        "messageKey": "agentLabel",
+        "label": "Agent label",
+        "defaultValue": "Otti"
+      },
+      {
+        "type": "select",
+        "messageKey": "replyMode",
+        "label": "Reply mode",
+        "defaultValue": "notification",
+        "options": [
+          {"label": "Notification", "value": "notification"},
+          {"label": "Watch/app only", "value": "watch"}
+        ]
+      }
+    ]
+  },
+  {
+    "type": "submit",
+    "defaultValue": "Save"
+  }
+]

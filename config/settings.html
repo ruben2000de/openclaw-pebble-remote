@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Otti Remote — Setup</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #1a1a2e; color: #e0e0e0; padding: 16px; }
+    h1 { font-size: 1.3em; margin-bottom: 16px; color: #e94560; }
+    label { display: block; margin-bottom: 4px; font-size: 0.9em; color: #aaa; }
+    input[type="text"], input[type="password"], select { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #333; border-radius: 6px; background: #16213e; color: #e0e0e0; font-size: 1em; }
+    input:focus, select:focus { outline: none; border-color: #e94560; }
+    button { width: 100%; padding: 12px; background: #e94560; color: #fff; border: none; border-radius: 6px; font-size: 1em; font-weight: 600; cursor: pointer; margin-top: 8px; }
+    button:active { background: #c73e54; }
+    .hint { font-size: 0.8em; color: #666; margin-bottom: 12px; }
+    .status { margin-top: 16px; padding: 10px; border-radius: 6px; background: #0f3460; font-size: 0.9em; display: none; }
+  </style>
+</head>
+<body>
+  <h1>🦦 Otti Remote Setup</h1>
+
+  <label for="endpoint">Hook-Endpoint URL</label>
+  <input type="text" id="endpoint" placeholder="https://example.com/hooks-RANDOM_SUFFIX/pebble-intent">
+  <div class="hint">OpenClaw Hook-Endpoint. Für echte Nutzung HTTPS/VPN bevorzugen; LAN-URLs nur für lokale Tests.</div>
+
+  <label for="token">Auth-Token</label>
+  <input type="password" id="token" placeholder="Bearer-Token für den Hook">
+
+  <label for="route">Route</label>
+  <select id="route">
+    <option value="hook" selected>Hook (empfohlen)</option>
+  </select>
+
+  <button onclick="saveConfig()">Speichern</button>
+
+  <div class="status" id="status"></div>
+
+  <script>
+    function loadConfig() {
+      document.getElementById('endpoint').value = localStorage.getItem('OTTI_ENDPOINT') || '';
+      document.getElementById('token').value = localStorage.getItem('OTTI_TOKEN') || '';
+      document.getElementById('route').value = localStorage.getItem('OTTI_ROUTE') || 'hook';
+    }
+
+    function showStatus(msg, isError) {
+      var el = document.getElementById('status');
+      el.style.display = 'block';
+      el.style.background = isError ? '#5a1a1a' : '#0f3460';
+      el.textContent = msg;
+    }
+
+    function saveConfig() {
+      var endpoint = document.getElementById('endpoint').value.trim();
+      var token = document.getElementById('token').value.trim();
+      var route = document.getElementById('route').value;
+
+      if (!endpoint || !/^https?:\/\//.test(endpoint)) {
+        showStatus('Fehler: Endpoint muss mit http:// oder https:// beginnen.', true);
+        return;
+      }
+      if (!token) {
+        showStatus('Fehler: Token darf nicht leer sein.', true);
+        return;
+      }
+
+      var config = { endpoint: endpoint, token: token, route: route };
+      var encoded = encodeURIComponent(JSON.stringify(config));
+
+      showStatus('Gespeichert! Schließe diese Seite...', false);
+
+      setTimeout(function() {
+        window.location.href = 'pebblejs://return#' + encoded;
+      }, 600);
+    }
+
+    loadConfig();
+  </script>
+</body>
+</html>
